@@ -39,12 +39,11 @@ int main() {
         matriz[i] = new int[columnas];
         matrizTranspuesta[i] = new int[filas];
     }
-
-    // Ingresar elementos de la matriz
+    // Generar números aleatorios entre 0 y 5
     cout << "Ingrese los elementos de la matriz:" << endl;
     for (int i = 0; i < filas; ++i) {
         for (int j = 0; j < columnas; ++j) {
-            matriz[i][j] = rand() % 10; // Generar números aleatorios entre 0 y 9
+            matriz[i][j] = rand() % 5; 
         }
     }
     // Mostrar matriz original
