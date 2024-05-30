@@ -1,8 +1,22 @@
+/*
+ * UNIVERSIDAD DE LAS FUERZAS ARMADAS ESPE
+ * Ejemplo de Recursividad simple
+ * Autor: Estiven Oña
+ * Fecha de creación: 29/05/2024
+ * Fecha de modificación: 29/05/2024
+*/
+
 #include <iostream>
 #include <ctime>
 using namespace std;
 
 
+/**
+ * This function simulates a delivery process by a delivery person.
+ * 
+ * @param repartidor The name of the delivery person.
+ * @param entregas The number of deliveries to be made.
+ */
 void delivery(string repartidor, int entregas){
     if(entregas == 0){
         cout << "Repartidor: " << repartidor << " ha terminado sus entregas" << endl;
@@ -17,8 +31,6 @@ void delivery(string repartidor, int entregas){
         delivery(repartidor, entregas-1);
     }
 }
-
-
 
 int main(){
     string nombre;
