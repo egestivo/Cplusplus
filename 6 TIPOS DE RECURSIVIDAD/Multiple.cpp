@@ -22,7 +22,7 @@ void delivery(string repartidor, int entregas){
         cout << "Repartidor: " << repartidor << " ha terminado sus entregas" << endl;
     }else if(entregas > 10){
 
-        cout << "Las entregas están sobresaturadas, se necesita otro repartidor" << endl;
+        cout << "Las " << entregas << " entregas están sobresaturadas, se necesita otro repartidor" << endl;
         delivery(repartidor, entregas/2);
         delivery(repartidor.append(" Reborn"), entregas/2);
     }else if(entregas > 0 || entregas <= 10){
@@ -34,10 +34,8 @@ void delivery(string repartidor, int entregas){
 
 int main(){
     string nombre;
-    //srand(time(NULL));
-    //int entregas = rand() % 20 + 5;
-    int entregas = 15;
-
+    srand(time(NULL));
+    int entregas = rand() % 20 + 7;
     cout<<"Ingrese un nombre: ";
     getline(cin, nombre);
     delivery(nombre, entregas);
