@@ -1,6 +1,6 @@
 /*
  * UNIVERSIDAD DE LAS FUERZAS ARMADAS ESPE
- * Ejemplo de Recursividad simple
+ * Ejemplo de Recursividad indirecta
  * Autor: Estiven Oña
  * Fecha de creación: 29/05/2024
  * Fecha de modificación: 29/05/2024
