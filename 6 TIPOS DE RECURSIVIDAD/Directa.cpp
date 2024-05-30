@@ -11,9 +11,27 @@
 #include <string.h>
 using namespace std;
 
+/**
+ * @brief A class for checking if a given array is a palindrome.
+ * 
+ * This class provides a method to check if a given array is a palindrome using recursion.
+ * 
+ * @tparam T The type of elements in the array.
+ */
+
 template <class T>
 class palíndromo{
     public:
+        /**
+         * @brief Check if the given array is a palindrome.
+         * 
+         * This method checks if the given array is a palindrome using recursion.
+         * 
+         * @param palabra The array to be checked.
+         * @param inicio The starting index of the array.
+         * @param fin The ending index of the array.
+         * @return true if the array is a palindrome, false otherwise.
+         */
         bool palindromo(T* palabra, int inicio, int fin) {
             if (inicio >= fin) {
                 return true;

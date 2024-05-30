@@ -7,6 +7,12 @@
 */
 #include <iostream>
 
+/**
+ * Recursively charges the battery until it reaches a certain threshold.
+ * 
+ * @param carga The current battery charge level.
+ */
+
 void baterry(double carga){
     if(carga > 50 || carga == 100){
         std::cout<<"Bateria cargada al máximo"<<std::endl;

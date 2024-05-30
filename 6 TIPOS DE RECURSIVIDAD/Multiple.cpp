@@ -10,7 +10,6 @@
 #include <ctime>
 using namespace std;
 
-
 /**
  * This function simulates a delivery process by a delivery person.
  * 

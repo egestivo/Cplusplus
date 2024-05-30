@@ -10,9 +10,8 @@
 using namespace std;
 
 enum class armas { a = 20, b = 40, c = 60 };
-
-/**
- * @brief Function to simulate a fight between a player and a boss.
+ /*
+ * @brief Function to simulate a battle between a player and a boss.
  * 
  * @tparam W The type of weapon used by the player.
  * @param arma The weapon used by the player.
@@ -21,6 +20,7 @@ enum class armas { a = 20, b = 40, c = 60 };
  * @param vida The player's remaining health.
  * @return True if the boss is defeated, false otherwise.
  */
+
 template <class W>
 bool luchar(W arma, int danio, int &vidaJefe, int &vida) {
     while (vidaJefe > 0 && vida > 0) {

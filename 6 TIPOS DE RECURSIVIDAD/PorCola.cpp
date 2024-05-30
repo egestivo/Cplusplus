@@ -1,6 +1,20 @@
-
+/*
+ * UNIVERSIDAD DE LAS FUERZAS ARMADAS ESPE
+ * Ejemplo de Recursividad por cola
+ * Autor: Estiven Oña
+ * Fecha de creación: 29/05/2024
+ * Fecha de modificación: 29/05/2024
+*/
 #include <iostream>
 using namespace std;
+
+/**
+ * Calculates the power of a number using recursion.
+ * 
+ * @param base The base number.
+ * @param exponente The exponent.
+ * @return The result of the power calculation.
+ */
 
 int potencia(int base, int exponente){
     if(exponente == 0){

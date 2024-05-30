@@ -9,6 +9,12 @@
 #include <iostream>
 using namespace std;
 
+/**
+ * Calculates the sum of numbers from 1 to n using recursion.
+ * @param n The number up to which the sum is calculated.
+ * @return The sum of numbers from 1 to n.
+ */
+
 int suma(int n){
     if(n == 0){
         return 0;
