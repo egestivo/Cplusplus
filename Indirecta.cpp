@@ -6,55 +6,63 @@
  * Fecha de modificación: 29/05/2024
 */
 #include <iostream>
+#include <ctime>
 using namespace std;
 
-enum class armas{a=20, b=40, c=60};
-bool luchar(int arma, int danio, int &vidaJefe, int &vida);
-void upgradeWeapon(int &arma, int &danio, int &vida);
+enum class armas { a = 20, b = 40, c = 60 };
 
+/**
+ * @brief Function to simulate a fight between a player and a boss.
+ * 
+ * @tparam W The type of weapon used by the player.
+ * @param arma The weapon used by the player.
+ * @param danio The damage inflicted by the player's weapon.
+ * @param vidaJefe The boss's remaining health.
+ * @param vida The player's remaining health.
+ * @return True if the boss is defeated, false otherwise.
+ */
 template <class W>
-bool luchar(W arma, int danio, int &vidaJefe, int &vida){
-    do{
+bool luchar(W arma, int danio, int &vidaJefe, int &vida) {
+    while (vidaJefe > 0 && vida > 0) {
+        srand(time(NULL));
         vidaJefe -= danio;
-        vida -= 10;
-        if(vidaJefe > 0 && vida <= 0){
-            cout<<"Has sido derrotado!"<<endl;
+        vida -= rand() % 25+20;
+        cout << "Ataque! Vida del jefe: " << vidaJefe << ", tu vida: " << vida << endl;
+        if (vidaJefe <= 0) {
+            cout << "Jefe derrotado!" << endl;
             return true;
-            break;
-        }else{
-            return false;
-            break;
         }
-    }while(vidaJefe > 0 && vida > 0);
+        if (vida <= 0) {
+            cout << "Has sido derrotado!" << endl;
+            return false;
+        }
+    }
+    return false;
 }
 
 template <class W, class X, class H>
-void derrotarJefe(W arma, X danio, H vida){
+void derrotarJefe(W arma, X &danio, H &vida) {
     int vidaJefe = 100;
     bool win = luchar(arma, danio, vidaJefe, vida);
-    if(win==true){
-        cout<<"Jefe derrotado!"<<endl;
-        return;
-    }else{
-        cout<<"Mejora tus armas para derrotarlo! ";
+    if (!win) {
+        cout << "Mejora tus armas para derrotarlo!" << endl;
         upgradeWeapon(arma, danio, vida);
     }
 }
 
-
 template <class T>
-    void upgradeWeapon(T &arma, int &danio, int &vida){
-        vida = 50;
-        arma = armas::c;
-        danio *= 2.5;
-        cout<<"Arma mejorada!"<<endl;
-        derrotarJefe(arma, danio, vida);
-    }
+void upgradeWeapon(T &arma, int &danio, int &vida) {
+    vida = 100;
+    arma = armas::c;
+    danio = static_cast<int>(arma);
+    cout << "Arma mejorada! Nuevo daño: " << danio << endl;
+    derrotarJefe(arma, danio, vida);
+}
 
-int main(){
+int main() {
     int vida = 100;
-    char arma = static_cast<char>(armas::a);
-    int danio = static_cast<int>(arma); 
+    armas arma = armas::a;
+    int danio = static_cast<int>(arma);
     derrotarJefe(arma, danio, vida);
     return 0;
 }
