@@ -17,6 +17,8 @@ struct Nodo{
 //Prototipo de función
 void insertarLista(Nodo *&, int);
 void menu();
+void buscarLista(Nodo *, int);
+void eliminarTodo(Nodo *&, int&);
 //declaramos el Nodo como global
 Nodo *lista = NULL;
 
@@ -49,7 +51,7 @@ void insertarLista(Nodo *&lista, int n){
     }
     //El nuevo nodo se enlaza al nodo siguiente, apuntando a NULL
     nuevo_nodo->siguiente = aux1;
-    cout<<"\t Elemento "<<n<<" Insertado a la lista correctamente!\n";
+    std::cout<<"\t Elemento "<<n<<" Insertado a la lista correctamente!\n";
 }
 
 void mostrarLista(Nodo *lista){
@@ -57,10 +59,66 @@ void mostrarLista(Nodo *lista){
     Nodo *actual = new Nodo();
     //Pasar el valor al que apunta lista, en este caso, el primero
     actual = lista;
+    std::cout << "-----------------------------------\n";
     //Comprobar que el elemento actual no sea el último, es decir NULL
     while(actual != NULL){
-        cout<<actual->dato<<" ->";
+        std::cout<<actual->dato<<" ->";
         actual = actual->siguiente;
+    }
+    std::cout<<"-------------------------------------\n";
+}
+
+void buscarLista(Nodo *Lista, int n){
+    Nodo *actual = new Nodo();
+    actual = lista;
+    bool bandera = false;
+    while((actual != NULL)&&(actual -> dato <= n)){
+        if(actual -> dato == n){
+            bandera = true;
+        }
+        actual = actual -> siguiente;
+    }
+    if(bandera){
+        std::cout<<"Elemento: " << n <<" ha sido encontrado en la lista!"<<endl;;
+    }else{
+        std::cout << "Elemento: " << n << " no existe en la lista!"<<endl;;
+    }
+}
+
+
+void eliminarTodo(Nodo *&lista, int &n){
+    Nodo *aux = lista;
+    n = aux->dato;
+    lista = aux->siguiente;
+    delete aux;
+}
+
+void eliminarElemento(Nodo *&lista, int n){
+    if(lista != NULL){
+        Nodo *aux_borrar;
+        Nodo *anterior = NULL;
+        aux_borrar = lista;
+        //* Entramos al bucle si hay un elemento y si es distinto del elemento a eliminar
+        while((aux_borrar != NULL)&&(aux_borrar->dato != n)){
+            //* aux borrar lo asignas a anterior que sería el primer lugar
+            anterior = aux_borrar;
+            //*aux borrar se mueve al siguiente puntero del sig. nodo
+            aux_borrar = aux_borrar->siguiente;
+        }
+        //* si el puntero al final es null entonces no existe
+        if(aux_borrar == NULL){
+            std::cout << "No existe tal elemento!" << endl;
+        }
+        //* Si se halla el elemento a eliminar
+            else if(anterior == NULL){
+            lista = lista -> siguiente;
+            delete aux_borrar;
+        }
+        //* Si el elemento a eliminar está en la lista pero no es el primer nodo
+        else{
+            anterior->siguiente = aux_borrar->siguiente;
+            delete aux_borrar;
+        }
     }
 }
 
@@ -68,28 +126,51 @@ void menu(){
     //dato a ingresar a la lista
     int dato, opcion;
     do{
-        cout<<"|-----MENÚ PRINCIPAL-----|\n";
-        cout<<"1. Insertar elementos a la lista\n";
-        cout<<"2. Mostrar elementos de la lista\n";
-        cout<<"3. Salir\n";
-        cout<<"Ingrese una opción: ";
-        cin>>opcion;
+        std::cout<<"|-----MENÚ PRINCIPAL-----|\n";
+        std::cout<<"1. Insertar elementos a la lista\n";
+        std::cout<<"2. Mostrar elementos de la lista\n";
+        std::cout<<"3. Buscar un elemento de la lista\n";
+        std::cout<<"4. Eliminar un elemento de la lista\n";
+        std::cout<<"5. Eliminar todos los elementos de la lista\n";
+        std::cout<<"6. Salir\n";
+        std::cout<<"Ingrese una opción: ";
+        std::cin>>opcion;
         switch(opcion){
             case 1:
-                cout<<"Ingrese un número: ";
-                cin>>dato;
+                std::cout<<"Ingrese un número: ";
+                std::cin>>dato;
                 insertarLista(lista, dato);
-                cout<<"\n";
+                std::cout<<"\n";
                 break;
             case 2:
                 mostrarLista(lista);
-                cout<<"\n";
+                std::cout<<"\n";
                 break;
             case 3:
+                std::cout<<"Ingrese un número a buscar: ";
+                std::cin>>dato;
+                buscarLista(lista, dato);
+                std::cout<<"\n";
+                break;
+            case 4:
+                std::cout<<"Ingrese el número a eliminar: ";
+                std::cin>>dato;
+                eliminarElemento(lista, dato);
+                std::cout<<"\n";
+                break;
+            case 5:
+                while(lista != NULL){
+                    eliminarTodo(lista, dato);
+                    std::cout<<"\n";
+                    std::cout<<dato<<" ha sido eliminado de la lista!\n";
+                }
+                std::cout<<"Todos los elementos han sido eliminados de la lista!\n";
+                break;
+            case 6:
+                std::cout<<"Saliendo del programa...\n";
                 break;
             default:
-                cout<<"Opción no válida\n";
+                std::cout<<"Opción no válida\n";
         } 
-        
-    }while(opcion != 3);
+    }while(opcion != 6);
 }
