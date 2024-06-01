@@ -11,23 +11,15 @@ struct Nodo{
 //Prototipo de función
 void agregarPila(Nodo *&, int);
 void sacarPila(Nodo *&, int&);
-void mostrarPila(Nodo*);
+void mostrarPila(Nodo*, int);
+void menu();
 
 
 //Nodo pila global para el menú
 Nodo *pila = NULL;
 
 int main(){
-
-    int n1;
-    char eleccion;
-    do{
-    cout<<"Digite un número: ";
-    cin>>n1;
-    agregarPila(pila, n1);
-    cout<<"Desea ingresar otro número? (s/n): ";
-    cin>>eleccion;
-    }while(toupper(eleccion) == 'S');
+    menu();
     return 0;
 }
 
@@ -47,13 +39,6 @@ void sacarPila(Nodo *&pila, int &n){
     delete aux;
 }
 
-void mostrarPila(Nodo *pila){
-    while(pila != NULL){
-        cout<<pila->dato<<endl;
-        pila = pila->siguiente;
-    }
-}
-
 void menu(){
     char eleccion;
     int dato;
@@ -62,16 +47,19 @@ void menu(){
         cout<<"|||--------------MENÚ PRINCIPAL--------------|||\n";
         cout<<"1. Agregar elementos a la pila\n";
         cout<<"2. Sacar elementos de la pila\n";
-        cout<<"3. Mostrar elementos de la pila\n";
-        cout<<"4. Salir\n";
+        cout<<"3. Salir\n";
         cout<<"|||-------------------------------------------|||\n";
         cout<<"Digite su opción: ";
         cin>>eleccion;
         switch(eleccion){
             case '1':
+                do{
                 cout<<"Digite un número: ";
                 cin>>dato;
                 agregarPila(pila, dato);
+                cout<<"Desea ingresar otro número? (s/n): ";
+                cin>>eleccion;
+                }while(toupper(eleccion) == 'S');
                 break;
             case '2':
                 cout<<"Sacando elementos de la pila: ";
@@ -86,10 +74,6 @@ void menu(){
                 cout<<"\n";
                 break;
             case '3':
-                cout<<"Mostrando Pila\n";
-                mostrarPila(pila);
-                break;
-            case '4':
                 cout<<"Saliendo del programa...\n";
                 break;
             default:
