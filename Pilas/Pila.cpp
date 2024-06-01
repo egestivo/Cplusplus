@@ -43,7 +43,6 @@ void menu(){
     char eleccion;
     int dato;
     do{
-
         cout<<"|||--------------MENÚ PRINCIPAL--------------|||\n";
         cout<<"1. Agregar elementos a la pila\n";
         cout<<"2. Sacar elementos de la pila\n";
@@ -80,5 +79,5 @@ void menu(){
                 cout<<"Opción no válida\n";
                 break;
         }
-    }while(eleccion != 3);
+    }while(eleccion != '3');
 }
