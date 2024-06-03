@@ -15,108 +15,95 @@
  * Fecha de creación: 03/06/2024;
  * Fecha de modificación: 03/06/2024;
 */
-//listas doblemente enlazadas
 #include <iostream>
 #include <string>
-#include <stdlib.h>
 #include <fstream>
+#include <cctype>
 using namespace std;
 
-struct Nodo{
+struct Nodo {
     string nombre;
     string apellido;
     Nodo *siguiente;
     Nodo *anterior;
 };
 
-//prototipos de funciones
-void insertarLista(Nodo *&, Nodo *&, string, string);
-void mostrarLista(Nodo *, Nodo *, Nodo*);
+// Prototipos de funciones
+void insertarLista(Nodo *&, string, string);
+void mostrarLista(Nodo *, Nodo *, Nodo *);
 void generarCorreo(Nodo *, Nodo *&);
 void guardarArchivo(Nodo *, Nodo *);
+bool comprobarCorreoArchivo(const string&);
 void menu();
 
-//variables globales, en este caso las listas correspondientes
+// Variables globales, en este caso las listas correspondientes
 Nodo *nombreApellido = NULL;
 Nodo *correos = NULL;
 
-//Función insertar lista
-void insertarLista(Nodo *&nombres, string nombre, string apellido){
+// Función insertar lista
+void insertarLista(Nodo *&nombres, string nombre, string apellido) {
     Nodo *nuevo_nodo = new Nodo();
     nuevo_nodo->nombre = nombre;
     nuevo_nodo->apellido = apellido;
     Nodo *aux1 = nombres;
-    if(nombres == NULL){
+    if (nombres == NULL) {
         nombres = nuevo_nodo;
         nombres->siguiente = NULL;
         nombres->anterior = NULL;
-    }else{
-        while(aux1->siguiente != NULL){
+    } else {
+        while (aux1->siguiente != NULL) {
             aux1 = aux1->siguiente;
         }
-
         aux1->siguiente = nuevo_nodo;
         nuevo_nodo->anterior = aux1;
     }
-    fflush(stdin);
 }
 
-//Función mostrar lista
-void mostrarLista(Nodo *correos,Nodo *nombres, Nodo *ultimo){
+// Función mostrar lista
+void mostrarLista(Nodo *correos, Nodo *nombres, Nodo *ultimo) {
     Nodo *actual = correos;
-    if(correos != NULL){
-        while(actual != NULL){
+    if (correos != NULL) {
+        while (actual != NULL) {
             cout << "Nombres: " << nombres->nombre << " Apellidos: " << nombres->apellido << endl;
             cout << "Correo: " << actual->nombre << endl;
             nombres = nombres->siguiente;
             actual = actual->siguiente;
         }
-    }else{
-        cout << "La lista esta vacia" << endl;
+    } else {
+        cout << "La lista está vacía" << endl;
     }
 }
 
-//Funcion generar correo, de manera que cumpla con los requerimientos
-//Si el correo antes de @espe.edu.ec ya existe, se le agrega un número
+// Función para generar correo
 void generarCorreo(Nodo *nombres, Nodo *&correos) {
     Nodo *actual = nombres;
-    
     while (actual != NULL) {
         string correo;
         correo = tolower(actual->nombre[0]);
-        
+
         if (actual->nombre.find(' ') != string::npos) {
             correo += tolower(actual->nombre[actual->nombre.find(' ') + 1]);
         }
-        
+
         correo += tolower(actual->apellido[0]);
-        correo += actual->apellido.substr(1, actual->apellido.find(' ')-1);
+        correo += actual->apellido.substr(1, actual->apellido.find(' ') - 1);
         string baseCorreo = correo + "@espe.edu.ec";
         string correoFinal = baseCorreo;
         int contador = 1;
-        
-        //Comprobar que el correo no exista
-        Nodo *aux = correos;
-        bool existe = false;
-        
-        while (aux != NULL) {
-            if (aux->nombre == correoFinal) {
-                existe = true;
-                correoFinal = correo + to_string(contador) + "@espe.edu.ec";
-                contador++;
-                aux = correos;
-            } else {
-                aux = aux->siguiente;
-            }
+
+        // Comprobar que el correo no exista en la lista y en el archivo
+        while (comprobarCorreoArchivo(correoFinal)) {
+            correoFinal = correo + to_string(contador) + "@espe.edu.ec";
+            contador++;
         }
-        
+
         insertarLista(correos, correoFinal, "");
-        
         actual = actual->siguiente;
     }
 }
-//Función guardar archivo
-void guardarArchivo(Nodo *nombres, Nodo *correos){
+
+// Función para guardar archivo sin sobrescribir
+void guardarArchivo(Nodo *nombres, Nodo *correos) {
     Nodo *actual = nombres;
     Nodo *aux = correos;
     string nombreArchivo;
@@ -124,36 +111,47 @@ void guardarArchivo(Nodo *nombres, Nodo *correos){
     cin.ignore();
     getline(cin, nombreArchivo);
     nombreArchivo += ".txt";
-    FILE *archivo;
-    archivo = fopen(nombreArchivo.c_str(), "w");
-    if(archivo == NULL){
+    ofstream archivo(nombreArchivo.c_str(), ios::app); // Abrir archivo en modo añadir
+    if (!archivo.is_open()) {
         cout << "No se pudo abrir el archivo" << endl;
         exit(1);
-    }else{
-        while(actual != NULL){
-            fprintf(archivo, "%s %s\n", actual->nombre.c_str(), actual->apellido.c_str());
+    } else {
+        while (actual != NULL) {
+            archivo << actual->nombre << " " << actual->apellido << endl;
+            archivo << aux->nombre << endl;
             actual = actual->siguiente;
-            fprintf(archivo, "%s\n", aux->nombre.c_str());
             aux = aux->siguiente;
         }
         cout << "Archivo guardado correctamente" << endl;
     }
-    fclose(archivo);
+    archivo.close();
 }
 
-//Función para mostrar el menú
-void menu(){
+// Función para comprobar si el correo ya existe en el archivo
+bool comprobarCorreoArchivo(const string& correo) {
+    ifstream archivo("correos.txt");
+    string linea;
+    while (getline(archivo, linea)) {
+        if (linea == correo) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Función para mostrar el menú
+void menu() {
     string nombre, apellido;
     int opcion;
-    do{
+    do {
         cout << "\n1. Ingresar nombres y apellidos" << endl;
         cout << "2. Generar correos" << endl;
         cout << "3. Mostrar correos" << endl;
         cout << "4. Guardar en archivo" << endl;
         cout << "5. Salir" << endl;
-        cout << "Opcion: ";
+        cout << "Opción: ";
         cin >> opcion;
-        switch(opcion){
+        switch (opcion) {
             case 1:
                 cout << "Ingrese nombres: ";
                 cin.ignore();
@@ -166,7 +164,7 @@ void menu(){
                 generarCorreo(nombreApellido, correos);
                 break;
             case 3:
-                mostrarLista(correos,nombreApellido, NULL);
+                mostrarLista(correos, nombreApellido, NULL);
                 break;
             case 4:
                 guardarArchivo(nombreApellido, correos);
@@ -175,9 +173,13 @@ void menu(){
                 cout << "Saliendo..." << endl;
                 break;
             default:
-                cout << "Opcion no valida" << endl;
+                cout << "Opción no válida" << endl;
                 break;
         }
-    }while(opcion != 5);
-    fflush(stdin);
+    } while (opcion != 5);
+}
+
+int main() {
+    menu();
+    return 0;
 }
