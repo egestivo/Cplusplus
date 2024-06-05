@@ -179,7 +179,3 @@ void menu() {
     } while (opcion != 5);
 }
 
-int main() {
-    menu();
-    return 0;
-}
